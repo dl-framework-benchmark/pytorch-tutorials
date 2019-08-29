@@ -42,6 +42,9 @@ Finetuning Torchvision Models
 
 from __future__ import print_function 
 from __future__ import division
+
+import argparse
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -85,26 +88,33 @@ print("Torchvision Version: ",torchvision.__version__)
 # ``feature_extract = True``, only the last layer parameters are updated,
 # the others remain fixed.
 # 
-
+parser = argparse.ArgumentParser(description='Test lstm correctness')
+parser.add_argument('--data_dir', default='./data/hymenoptera_data', type=str)
+parser.add_argument('--model_name', default='squeezenet', type=str)
+parser.add_argument('--num_classes', default=2, type=int)
+parser.add_argument('--batch_size', default=8, type=int)
+parser.add_argument('--num_epochs', default=15, type=int)
+parser.add_argument('--feature_extract', default=True, type=bool)
+args = parser.parse_args()
 # Top level data directory. Here we assume the format of the directory conforms 
 #   to the ImageFolder structure
-data_dir = "./data/hymenoptera_data"
+data_dir = args.data_dir
 
 # Models to choose from [resnet, alexnet, vgg, squeezenet, densenet, inception]
-model_name = "squeezenet"
+model_name = args.model_name
 
 # Number of classes in the dataset
-num_classes = 2
+num_classes = args.num_classes
 
 # Batch size for training (change depending on how much memory you have)
-batch_size = 8
+batch_size = args.batch_size
 
 # Number of epochs to train for 
-num_epochs = 15
+num_epochs = args.num_epochs
 
 # Flag for feature extracting. When False, we finetune the whole model, 
 #   when True we only update the reshaped layer params
-feature_extract = True
+feature_extract = args.feature_extract
 
 
 ######################################################################
